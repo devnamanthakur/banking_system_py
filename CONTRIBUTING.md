@@ -28,14 +28,23 @@ This project uses [uv](https://github.com/astral-sh/uv) for dependency managemen
 brew install uv 
 ```
 
-### 1. Install Dependencies
+### Install Dependencies and running project
+
+Uv handles installing dependencies and running the file so just run the run command as below
 ```sh
-uv pip install --system --all
+uv run -m src.main
+```
+
+> Note: `-m` cause `src` is also a module/package due to `__init__.py` file so here `-m` means run inside the module `src`
+
+OR you can use make file which runs the exact same command
+```
+make run
 ```
 
 ### 2. Using the Makefile
 The `Makefile` provides helpful shortcuts:
-- `make run`    — Run the banking system application
+- `make run` or `make`    — Run the banking system application
 - `make format` — Format code using ruff
 - `make help`   — Show available commands
 
