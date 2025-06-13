@@ -6,6 +6,7 @@ run:
 	uv run -m src.main
 
 format:
+	@echo "Formatting the project..."
 	uv run ruff format
 
 help:
