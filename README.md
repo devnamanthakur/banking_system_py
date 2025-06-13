@@ -33,19 +33,41 @@ banking_system_py/
 ## Setup
 1. **Clone the repository:**
    ```sh
-   git clone <repo-url>
+   git clone https://github.com/testdevharshthakur/banking_system_py.git
    cd banking_system_py
    ```
-   
+
 2. **Install dependencies:**
    ```sh
-   uv pip install --system --all
+   uv sync
    ```
 
-## Usage
-Run the application from the `src` directory:
+## Usage 
+
+### Their are two ways to run appication
+
+1. Run the application from the `root` directory 
 ```sh
-python src/main.py
+uv run -m src.main
+```
+2. I have made a make file which does the same, to use this run
+```sh
+ make run
+```
+
+### Their are two ways to format the code
+
+1. Use the ruff directly using uv
+```sh
+uv run ruff format
+```
+2. Do the same via make
+ ```sh
+ make format
+```
+3 To see all the make commands available run 
+```sh
+make help
 ```
 
 Follow the on-screen menu to perform banking operations.
@@ -65,7 +87,8 @@ Follow the on-screen menu to perform banking operations.
 - To add features or fix bugs, edit the relevant files in `src/`.
 
 ## License
-MIT (add your license here)
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ---
 *This project is for educational/demo purposes. Not for production banking use.*
