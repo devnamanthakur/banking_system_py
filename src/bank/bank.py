@@ -209,11 +209,11 @@ class Bank:
             print(f"An unexpected error occurred while saving accounts: {e}")
 
     def _delete_accounts(self, account_number: int) -> None:
+        """Deletes account from DATA_FILE """
         acc_num_to_be_deleted = account_number
 
         with open(DATA_FILE, "r") as f:
             data = json.load(f)
-            updated_accounts = []
             for i in data["accounts"]:
                 if i.get("account_number") == acc_num_to_be_deleted:
                     self.accounts.pop(acc_num_to_be_deleted)
