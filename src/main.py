@@ -24,7 +24,8 @@ def main():
         print("4. Transfer Funds")
         print("5. Check Account Balance")
         print("6. List All Accounts")
-        print("7. Exit")
+        print("7. Delete Accounts")
+        print("8 Exit")
         print("------------------------------------")
 
         choice = get_input_int("Enter your choice: ")
@@ -42,6 +43,8 @@ def main():
         elif choice == 6:
             list_all_accounts_menu(bank)
         elif choice == 7:
+            delete_account_menu(bank)
+        elif choice == 8:
             print("Exiting banking system. Goodbye!")
             break
         else:
@@ -166,6 +169,12 @@ def list_all_accounts_menu(bank: Bank) -> None:
     clear_screen()
     print("--- List All Accounts ---")
     bank.list_all_accounts()
+    press_enter_to_continue()
+
+
+def delete_account_menu(bank: Bank) -> None:
+    num = int(input("Enter the Account number"))
+    Bank._delete_accounts(bank, num)
     press_enter_to_continue()
 
 

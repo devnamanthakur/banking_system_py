@@ -1,7 +1,8 @@
 # banking_app_python/src/services/bank.py
 import json
+from operator import truediv
 import os
-from typing import Dict, Optional
+from typing import Dict, Optional, Self
 
 from src.bank.account import Account
 
@@ -206,3 +207,14 @@ class Bank:
             print(f"Failed to write data to file: {e}")
         except Exception as e:
             print(f"An unexpected error occurred while saving accounts: {e}")
+
+    def _delete_accounts(self, account_number: int) -> None:
+        acc_num_to_be_deleted = account_number
+
+        with open(DATA_FILE, "r") as f:
+            data = json.load(f)
+            updated_accounts = []
+            for i in data["accounts"]:
+                if i.get("account_number") == acc_num_to_be_deleted:
+                    self.accounts.pop(acc_num_to_be_deleted)
+                    self._save_accounts()
