@@ -1,5 +1,6 @@
 # banking_app_python/src/services/bank.py
 import json
+from ntpath import exists
 from operator import truediv
 import os
 from typing import Dict, Optional, Self
@@ -8,9 +9,6 @@ from src.bank.account import Account
 
 DATA_DIR = "data"
 DATA_FILE = os.path.join(DATA_DIR, "accounts.json")
-DATA_FILE_HISTORY=os.path.join(DATA_DIR,"account_history.json")
-
-
 class Bank:
     """Manages all bank accounts and operations."""
 
@@ -219,13 +217,44 @@ class Bank:
                 if i.get("account_number") == acc_num_to_be_deleted:
                     self.accounts.pop(acc_num_to_be_deleted)
                     self._save_accounts()
-    def _transaction_history(self,account_number:int)-> None:
-        """Shows transaction history of the given user via taking account number"""
-        acc_num_history=account_number
-        with open(DATA_FILE,'r') as file:
-            history=json.load(file)
-            for i in history:
-                if i.get(account_number) == acc_num_history:
-                    print()
+    def _clean_path(self, path: str) -> str:
+        """Removes leading/trailing single quotes from a file path."""
+        return path.strip("'").strip('"')
+    
+    def _export_data(self) -> None:
+        """Exports data to a user-specified file or directory."""
+        try:
+            with open(DATA_FILE, 'r') as f:
+                data_to_export = json.load(f)
+        except (IOError, json.JSONDecodeError) as e:
+            print(f"Error reading account data file: {e}")
+            return
 
+        file_path_raw = input("Enter the path for the export file or directory: ")
+        file_path = self._clean_path(file_path_raw)
 
+        if not file_path:
+            print("Error: Export path cannot be empty.")
+            return
+
+        # If the user-provided path is an existing directory, append a default filename.
+        if os.path.isdir(file_path):
+            default_filename = "accounts_export.json"
+            file_path = os.path.join(file_path, default_filename)
+            print(f"Directory provided. Exporting to '{file_path}'")
+
+        try:
+            # Ensure the parent directory exists before writing the file.
+            parent_dir = os.path.dirname(file_path)
+            if parent_dir:
+                os.makedirs(parent_dir, exist_ok=True)
+
+            with open(file_path, 'w') as f:
+                json.dump(data_to_export, f, indent=4)
+            print(f"Data successfully exported to '{file_path}'.")
+
+        except PermissionError:
+            print(f"Error: Permission denied to write to '{file_path}'.")
+        except Exception as e:
+            print(f"An unexpected error occurred while writing to the file: {e}")
+        
