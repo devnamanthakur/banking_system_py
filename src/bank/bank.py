@@ -8,6 +8,7 @@ from src.bank.account import Account
 
 DATA_DIR = "data"
 DATA_FILE = os.path.join(DATA_DIR, "accounts.json")
+DATA_FILE_HISTORY=os.path.join(DATA_DIR,"account_history.json")
 
 
 class Bank:
@@ -218,3 +219,13 @@ class Bank:
                 if i.get("account_number") == acc_num_to_be_deleted:
                     self.accounts.pop(acc_num_to_be_deleted)
                     self._save_accounts()
+    def _transaction_history(self,account_number:int)-> None:
+        """Shows transaction history of the given user via taking account number"""
+        acc_num_history=account_number
+        with open(DATA_FILE,'r') as file:
+            history=json.load(file)
+            for i in history:
+                if i.get(account_number) == acc_num_history:
+                    print()
+
+
