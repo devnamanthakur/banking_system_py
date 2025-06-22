@@ -224,31 +224,37 @@ class Bank:
     def _export_data(self) -> None:
         """Exports data to a user-specified file or directory."""
         try:
+            """Loading data from the accounts.json file """
             with open(DATA_FILE, 'r') as f:
                 data_to_export = json.load(f)
         except (IOError, json.JSONDecodeError) as e:
             print(f"Error reading account data file: {e}")
             return
 
+        """Taking path of the file including single qoutes with them"""
         file_path_raw = input("Enter the path for the export file or directory: ")
         file_path = self._clean_path(file_path_raw)
-
+        
+        """Checking if the user has given the file path or not"""
         if not file_path:
             print("Error: Export path cannot be empty.")
             return
 
-        # If the user-provided path is an existing directory, append a default filename.
+        """Checking if the path given by the user is an existing directory or not and the file exists or not if the file 
+        does not exist then we make a default file named accounts_export.json in that directory"""
         if os.path.isdir(file_path):
             default_filename = "accounts_export.json"
             file_path = os.path.join(file_path, default_filename)
             print(f"Directory provided. Exporting to '{file_path}'")
 
         try:
-            # Ensure the parent directory exists before writing the file.
+            
+            """ Ensure the parent directory exists before writing the file."""
             parent_dir = os.path.dirname(file_path)
             if parent_dir:
                 os.makedirs(parent_dir, exist_ok=True)
 
+            """Stores the data from the accounts.json file to the new file in the path given by the user or accounts_export.json"""
             with open(file_path, 'w') as f:
                 json.dump(data_to_export, f, indent=4)
             print(f"Data successfully exported to '{file_path}'.")
@@ -257,4 +263,3 @@ class Bank:
             print(f"Error: Permission denied to write to '{file_path}'.")
         except Exception as e:
             print(f"An unexpected error occurred while writing to the file: {e}")
-        
